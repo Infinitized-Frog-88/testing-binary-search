@@ -6,3 +6,6 @@ set(CMAKE_CXX_STANDART 23)
 
 add_subdirectory(bin)
 add_subdirectory(lib)
+
+enable_testing()
+add_subdirectory(tests)

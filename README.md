@@ -28,6 +28,8 @@ git clone https://github.com/Infinitized-Frog-88/testing-binary-search.git
 cd testing-binary-search
 ```
 2. **Сборка проекта**
+
+
 Создайте и перейдите в папку `build`:
 ```bash
 mkdir build
@@ -39,6 +41,7 @@ cmake .. -G "MinGW Makefiles"
 cmake --build .
 ```
 3. **Запуск тестов**
+
 После сборки выполните скомпилированные тесты:
 ```bash
 ctest --output-on-failure

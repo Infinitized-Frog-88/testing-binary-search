@@ -19,26 +19,22 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v3
 
-    - name: Install dependencies on Ubuntu
+    - name: Install g++ and dependencies
       run: |
         if [ "${{ matrix.os }}" == "ubuntu-latest" ]; then
           sudo apt-get update
+          sudo apt-get install -y g++
           sudo apt-get install -y libidn2-0
-          sudo ln -s /usr/lib/x86_64-linux-gnu/libidn2.so /usr/lib/x86_64-linux-gnu/libidn.so.11 || true
-        fi
-      shell: bash
-
-    - name: Install dependencies on Windows
-      run: |
-        if ($env:RUNNER_OS -eq "Windows") {
+          wget http://archive.ubuntu.com/ubuntu/pool/main/libi/libidn11/libidn11_1.33-2ubuntu1_amd64.deb
+          sudo dpkg -i libidn11_1.33-2ubuntu1_amd64.deb
+          export LD_LIBRARY_PATH=/usr/lib/x86_64-linux-gnu:$LD_LIBRARY_PATH
+          echo "LD_LIBRARY_PATH=$LD_LIBRARY_PATH"
+        elif [ "${{ matrix.os }}" == "windows-latest" ]; then
           choco install mingw
-        }
-      shell: pwsh
+        fi
 
     - name: Set up CMake
       uses: lukka/get-cmake@v3.27.1
-      with:
-        cmakeVersion: '3.5.0'
 
     - name: Configure and Build with g++
       run: |

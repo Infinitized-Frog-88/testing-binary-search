@@ -19,7 +19,7 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v3
 
-    - name: Install g++
+    - name: Install g++ for Ubuntu
       run: |
         if [ "${{ matrix.os }}" == "ubuntu-latest" ]; then
           sudo apt-get update
@@ -27,7 +27,7 @@ jobs:
         fi
       shell: bash
 
-    - name: Install g++
+    - name: Install g++ for Windows
       run: |
         if ($env:RUNNER_OS -eq "Windows") {
           choco install mingw
@@ -36,12 +36,12 @@ jobs:
           
     - name: Set up CMake
       uses: lukka/get-cmake@v3.27.1
-      
+
     - name: Configure and Build with g++
       run: |
         mkdir build
         cd build
-        cmake .. -DCMAKE_CXX_COMPILER=g++
+        cmake .. -G "MinGW Makefiles" -DCMAKE_CXX_COMPILER=g++
         cmake --build .
 
     - name: Run Unit Tests

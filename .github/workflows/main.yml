@@ -19,7 +19,7 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v3
 
-    - name: Install g++ and dependencies
+    - name: Install g++ and CMake
       run: |
         if [ "${{ matrix.os }}" == "ubuntu-latest" ]; then
           sudo apt-get update
@@ -29,12 +29,20 @@ jobs:
           sudo apt-get install -y libidn2-0
           export LD_LIBRARY_PATH=/usr/lib/x86_64-linux-gnu:$LD_LIBRARY_PATH
           echo "LD_LIBRARY_PATH=$LD_LIBRARY_PATH"
-        elif [ "${{ matrix.os }}" == "windows-latest" ]; then
-          choco install mingw
         fi
+      shell: bash
 
+    - name: Install g++ and CMake on Windows
+      run: |
+        if ($env:RUNNER_OS -eq "Windows") {
+          choco install mingw
+        }
+      shell: pwsh
+          
     - name: Set up CMake
       uses: lukka/get-cmake@v3.27.1
+      with:
+        cmakeVersion: '3.5.0'
 
     - name: Configure and Build with g++
       run: |

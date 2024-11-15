@@ -19,20 +19,25 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v3
 
-    - name: Install g++
+    - name: Install g++ and CMake
       run: |
         if [ "${{ matrix.os }}" == "ubuntu-latest" ]; then
           sudo apt-get update
           sudo apt-get install -y g++
-        elif [ "${{ matrix.os }}" == "windows-latest" ]; then
-          choco install mingw
-          echo "C:\Program Files\mingw\bin" >> $Env:Path
         fi
+      shell: bash 
 
+    - name: Install g++ and CMake on Windows
+      run: |
+        if ($env:RUNNER_OS -eq "Windows") {
+          choco install mingw
+        }
+      shell: pwsh 
+          
     - name: Set up CMake
       uses: lukka/get-cmake@v3.27.1
       with:
-        cmake-version: '3.30.3'
+        cmakeVersion: '3.5.0'
 
     - name: Configure and Build with g++
       run: |

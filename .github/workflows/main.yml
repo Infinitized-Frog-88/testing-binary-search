@@ -37,12 +37,25 @@ jobs:
     - name: Set up CMake
       uses: lukka/get-cmake@v3.27.1
 
-    - name: Configure and Build with g++
+    - name: Configure and Build with g++ on Ubuntu
       run: |
-        mkdir build
-        cd build
-        cmake .. -G "MinGW Makefiles"
-        cmake --build .
+        if [ "${{ matrix.os }}" == "ubuntu-latest" ]; then
+          mkdir build
+          cd build
+          cmake .. -DCMAKE_CXX_COMPILER=g++
+          cmake --build .
+        fi
+      shell: bash
+
+    - name: Configure and Build with g++ on Windows
+      run: |
+        if ($env:RUNNER_OS -eq "Windows") {
+          mkdir build
+          cd build
+          cmake .. -G "MinGW Makefiles"
+          cmake --build .
+        }
+      shell: pwsh
 
     - name: Run Unit Tests
       run: |

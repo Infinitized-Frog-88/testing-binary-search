@@ -22,11 +22,11 @@ jobs:
     - name: Install dependencies
       run: |
         if [ "${{ matrix.os }}" == "ubuntu-latest" ]; then
-          sudo apt-get install -y libidn11
+          sudo apt-get install -y build-essential cmake
         fi
       shell: bash
 
-    - name: Install g++ and CMake
+    - name: Install g++
       run: |
         if [ "${{ matrix.os }}" == "ubuntu-latest" ]; then
           sudo apt-get update
@@ -34,7 +34,7 @@ jobs:
         fi
       shell: bash
 
-    - name: Install g++ and CMake on Windows
+    - name: Install g++
       run: |
         if ($env:RUNNER_OS -eq "Windows") {
           choco install mingw

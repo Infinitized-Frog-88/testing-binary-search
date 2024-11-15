@@ -1,0 +1,47 @@
+name: Binary Search Testing
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  unit-tests:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Install g++
+      run: |
+        if [ "${{ matrix.os }}" == "ubuntu-latest" ]; then
+          sudo apt-get update
+          sudo apt-get install -y g++
+        elif [ "${{ matrix.os }}" == "windows-latest" ]; then
+          choco install mingw
+          echo "C:\Program Files\mingw\bin" >> $Env:Path
+        fi
+
+    - name: Set up CMake
+      uses: lukka/get-cmake@v3
+      with:
+        cmake-version: '3.30.3'
+
+    - name: Configure and Build with g++
+      run: |
+        mkdir build
+        cd build
+        cmake .. -DCMAKE_CXX_COMPILER=g++
+        cmake --build .
+
+    - name: Run Unit Tests
+      run: |
+        cd build
+        ctest --output-on-failure

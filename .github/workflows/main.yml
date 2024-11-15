@@ -23,7 +23,7 @@ jobs:
       run: |
         if [ "${{ matrix.os }}" == "ubuntu-latest" ]; then
           sudo apt-get update
-          sudo apt-get install -y libidn2
+          sudo apt-get install -y libidn2-0
           sudo ln -s /usr/lib/x86_64-linux-gnu/libidn2.so /usr/lib/x86_64-linux-gnu/libidn.so.11 || true
         fi
       shell: bash

@@ -19,6 +19,13 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v3
 
+    - name: Install dependencies
+      run: |
+        if [ "${{ matrix.os }}" == "ubuntu-latest" ]; then
+          sudo apt-get install -y libidn11
+        fi
+      shell: bash
+
     - name: Install g++ and CMake
       run: |
         if [ "${{ matrix.os }}" == "ubuntu-latest" ]; then
@@ -43,7 +50,7 @@ jobs:
       run: |
         mkdir build
         cd build
-        cmake .. -G "MinGW Makefiles"
+        cmake .. -DCMAKE_CXX_COMPILER=g++
         cmake --build .
 
     - name: Run Unit Tests

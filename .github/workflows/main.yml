@@ -25,8 +25,7 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y g++
           sudo apt-get install -y libidn2-0
-          wget http://archive.ubuntu.com/ubuntu/pool/main/libi/libidn11/libidn11_1.33-2ubuntu1_amd64.deb || echo "libidn11 not found"
-          sudo apt-get install -y libidn2-0
+          sudo apt-get install -y libidn11 || echo "libidn11 not available, skipping"
           export LD_LIBRARY_PATH=/usr/lib/x86_64-linux-gnu:$LD_LIBRARY_PATH
           echo "LD_LIBRARY_PATH=$LD_LIBRARY_PATH"
         fi

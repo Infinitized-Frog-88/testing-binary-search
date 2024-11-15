@@ -19,25 +19,26 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v3
 
-    - name: Install g++ and CMake
+    - name: Install dependencies on Ubuntu
       run: |
         if [ "${{ matrix.os }}" == "ubuntu-latest" ]; then
           sudo apt-get update
-          sudo apt-get install -y g++
+          sudo apt-get install -y g++ libidn11
         fi
-      shell: bash 
+      shell: bash
 
-    - name: Install g++ and CMake on Windows
+    - name: Install dependencies on Windows
       run: |
         if ($env:RUNNER_OS -eq "Windows") {
           choco install mingw
         }
-      shell: pwsh 
-          
+      shell: pwsh
+
     - name: Set up CMake
       uses: lukka/get-cmake@v3.27.1
       with:
         cmakeVersion: '3.5.0'
+        useCloudCache: false
 
     - name: Configure and Build with g++
       run: |
